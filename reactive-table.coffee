@@ -155,6 +155,7 @@ ReactiveTable::getData = ->
 
   data.rows = found.map (row, index) ->
     {
+      _id: row._id
       rowIndex: index + 1    # startIndex + rowIndex <= endIndex
       values: (row[field] ? `undefined` for field in fields)
     }
