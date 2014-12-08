@@ -26,5 +26,5 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('tinytest');
   api.use('oorabona:reactive-table');
-  api.addFiles('oorabona:reactive-table-tests.coffee');
+  api.addFiles('reactive-table-tests.coffee');
 });
