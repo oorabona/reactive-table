@@ -1,11 +1,17 @@
-# Meteor Reactive Tables
+# Meteor ReactiveTable
 
-This Meteor 1.0 Package helps you when you need to display reactively table
-structured data. You can have a look at the [demo](http://reactive-table.meteor.com).
+ReactiveTable, a Meteor package to provide you with reactively updated tabular data tables, pagination and search capabilities. All client side!
+
+The [demo](http://reactive-table.meteor.com) shows a Bootstrap empty table. Open your browser console and when inserting data into the (client only) _Books_ collection, you should see the table auto updating !
+
+## How it works
+This package has been designed to _prepare_ data and make template bindings
+easily. It handles pagination and search based queries.
+Basically, options are checked and, if valid, 'layout' template will be rendered with this prepared data context.
 
 ## Usage
 
-Basically you insert reactive table within your template with:
+You simply need to call it from somewhere in your template:
 
 ```mustache
 <template name="page">
@@ -19,25 +25,27 @@ Where:
 * __layout__: template name to render
 * __options__: instance options
 
-> This package has been designed so that you are free to provide your own template rendering.
 
 ### Options
 
-Reactive Table options need to be completed with data source.
+ReactiveTable options need to be completed with data source.
 All accepted options are:
 
 * collection (_Meteor.Collection_) : Must specify an instance of Meteor.Collection. __[mandatory]__
-* schema (_SimpleSchema_) : If you are using [SimpleSchema](http://github.com/aldeed/SimpleSchema), you can bind your instance __[optional]__
+* schema (_SimpleSchema_) : If you are using [SimpleSchema](https://github.com/aldeed/meteor-simple-schema), you can bind your instance __[optional]__
 * fields (_Array of Strings_) : Visible fields. Only __[mandatory]__ if not using 'schema' above.
-* fieldNames (_Array of Strings_) : Fields names to be display as header. It will be used if set, otherwise if __schema__ is used, it will get labels from SimpleSchema. And if not using SimpleSchema, it will default to __fields__.
+* fieldNames (_Array of Strings_) : Fields names to display as column titles. It will be used if set, otherwise if you provided a __schema__, it will get labels from SimpleSchema. And if not using SimpleSchema, it will default to __fields__.
 * sort (_Object_) : Key/value pairs of columns to be sorted __[optional]__
 * limit (_Integer_) : Limit output to this number of documents __[default: 5]__
 * page (_Integer_) : Go to this page (if using pagination). Must be > 0 __[default: 1]__
 * maxPages (_Integer_) : When using pagination, set maximum displayable pages links __[default: 1]__
 * query (_String_ or _Object_) : Facet querying (see below) __[optional]__
 * queryOpts (_String_) : When using query, will be used for RegExp options. E.g.: Use 'i' for insensitive match, 'g' for global, etc. __[default: 'i']__
+* config (_Object_) : If you want to reuse your templates you might be interested in providing a configuration object, it is of no use for ReactiveTable and forwarded untouched to the template.
 
 #### Example (Non-reactive):
+
+From the _Books_ example of [Simple Schema](https://github.com/aldeed/meteor-simple-schema):
 ```coffee
 Template.tableExample.helpers
   'myTableOptions':
@@ -106,6 +114,93 @@ The most simple example:
 </template>
 ```
 
-Layout template is fed with a responsive object with incoming data.
-You are of course free to take care of all of them or only part of them in your
-layout!
+Layout template has its own data context it can parse to its liking.
+You may or may not use all of these data:
+
+```javascript
+context = {
+  // This is left untouched by ReactiveTable and is only needed if your
+  // template may need setup (useful when reusing templates)
+  config: {
+    pagination: true
+  },
+  // If you want to use table headers, this will probably be helperful!
+  header: {
+    columns: [
+      {
+        id: 'col_title',
+        title: 'Classy Title'
+      },
+      {
+        id: 'author',
+        title: 'Author'
+      }
+    ]
+  },
+  data: {
+    // Total number of records (filtered)
+    count: 12,
+    // First 'row id' of current page (starts at 1)
+    startIndex: 11,
+    // Last 'row id' to display endIndex - startIndex + 1 = rows.length
+    endIndex: 12,
+    // Page number (always > 0)
+    page: 2,
+    // Even if you do not use pagination, you will have an array of page(s)
+    // that will give active status and page number. E.g. if on page 2:
+    pages: [
+      {
+        active: false,
+        page: 1
+      },
+      {
+        active: true,
+        page: 2
+      }
+    ],
+    // Maximum pages needed to display all (filtered) documents
+    totalPages: 2,
+    // At the moment it is an array of rows containing an array of values
+    rows: [
+      {
+        rowIndex: 1,
+        values: [
+          'foo line 1',
+          undefined,
+          'bar line 1'
+        ]
+      },
+      {
+        rowIndex: 2,
+        values: {
+          'foo line 2',
+          'bar line 2',
+          undefined
+        }
+      }
+    ]
+  }
+}
+```
+
+## Queries
+
+Queries can be plain old _Object_ and used 'as is' or can be of type _String_ and have two syntaxes:
+
+```coffee
+# key:value
+# This will search 'value' for key and 'bar' for foo
+query = 'key:value foo:bar'
+# A somewhat FTS example, this will search in all visible columns using RegExp
+query = 'myvalue'
+# The following will only consider 'key:value' pair and not 'myvalue' in the search
+query = 'myvalue key:value'
+```
+
+## TODO
+
+Tests, and more testing. Issues and PR are most welcomed !
+
+## License
+
+MIT
