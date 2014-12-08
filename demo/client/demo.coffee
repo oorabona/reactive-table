@@ -1,13 +1,24 @@
+# Demo
+
+# Create a client only collection
 @Books = new Meteor.Collection null
 
 Template.registerHelper 'checkedIf', (cond) ->
   if cond then 'checked' else ''
 
+Template.registerHelper 'isOdd', (val) -> if val % 2 then 'odd' else 'even'
+
+# Kudos go to http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/
+toType = (obj) ->
+  ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+
+Template.registerHelper 'isDate', -> 'date' == toType @
+
 Session.setDefault 'maxByPage', 10
 Session.setDefault 'currentPage', 1
 
 # Define the schema
-@BookSchema = new SimpleSchema(
+BookSchema = new SimpleSchema(
   title:
     type: String
     label: "Title"
@@ -141,3 +152,8 @@ Template.tableLayout_bootstrap_pagination.events
     evt.stopImmediatePropagation()
     Session.set 'currentPage', @data.page + 1
     return
+
+Meteor.startup ->
+  console.log "Welcome Meteor Hacker, you can try Books.insert({title: 'foo'});"
+  console.log "Books property keys are:", BookSchema.objectKeys()
+  return

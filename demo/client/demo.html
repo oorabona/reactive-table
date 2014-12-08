@@ -3,8 +3,14 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor Reactive Table demo!</h1>
+  <div class="container-fluid">
+    <h1>Welcome to Meteor Reactive Table demo!</h1>
+    <h2>This is a bootstrap 3 'theme' showing a complete use of
+    <a href="https://github.com/oorabona/reactive-table/">ReactiveTable</a></h2>
+    <h3>Open your browser console to insert data...</h3>
+  </div>
 
+  <hr/>
   {{> reactiveDemo}}
 </body>
 
@@ -37,9 +43,13 @@
           {{#with data}}
           <tbody>
             {{#each rows}}
-            <tr role="row" class="odd">
-              {{#each this}}
-              <td class="sorting_1">{{value}}</td>
+            <tr role="row" class="{{isOdd rowIndex}}">
+              {{#each values}}
+                {{#if isDate}}
+                <td class="sorting_{{../rowIndex}}">{{this.toLocaleString}}</td>
+                {{else}}
+                <td class="sorting_{{../rowIndex}}">{{this}}</td>
+                {{/if}}
               {{/each}}
             </tr>
             {{/each}}
@@ -136,9 +146,9 @@
     <tbody>
       {{#each rows}}
       <tr>
-        {{#each this}}
+        {{#each values}}
         <td>
-          {{value}}
+          {{this}}
         </td>
         {{/each}}
       </tr>
