@@ -2,7 +2,7 @@
 
 ReactiveTable, a Meteor package to provide you with reactively updated tabular data tables, pagination and search capabilities. All client side!
 
-The [demo](http://reactive-table.meteor.com) shows a Bootstrap empty table. Open your browser console and when inserting data into the (client only) _Books_ collection, you should see the table auto updating !
+The demo shows a Bootstrap empty table. Open your browser console and when inserting data into the (client only) _Books_ collection, you should see the table auto updating !
 
 ## How it works
 This package has been designed to _prepare_ data and make template bindings

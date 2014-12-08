@@ -1,7 +1,5 @@
 # ReactiveTable demo
 
-See it in [action](http://reactive-table.meteor.com).
-
 It is a very simple demo, showing a typical Bootstrap table. It starts with no
 data, so you need to add some, e.g.:
 
