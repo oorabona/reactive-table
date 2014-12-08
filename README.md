@@ -167,18 +167,20 @@ context = {
     // At the moment it is an array of rows containing an array of values
     rows: [
       {
+        _id: "iA3x9gRnfigyMyDua",
         rowIndex: 1,
         values: [
-          'foo line 1',
+          'Classic Title 1',
           undefined,
-          'bar line 1'
+          'Summary 1'
         ]
       },
       {
+        _id: "ZPp4wn2ZdPYhjXhf4",
         rowIndex: 2,
         values: {
-          'foo line 2',
-          'bar line 2',
+          'Classic title 2',
+          'author',
           undefined
         }
       }
