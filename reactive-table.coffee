@@ -62,7 +62,7 @@ class ReactiveTable
             kv_pair = "{\"#{el}\"}".split(':').join '":"'
             # Remove double quotes if number is detected
             # http://stackoverflow.com/questions/5834901/jquery-automatic-type-conversion-during-parse-json
-            kv_pair.replace(/"(-?\d)/g, "$1").replace(/(\d)"/g, "$1")
+            kv_pair = kv_pair.replace(/"(-?\d)/g, "$1").replace(/(\d)"/g, "$1")
             _.extend query, JSON.parse kv_pair
         else
           # By default search is case insensitive
