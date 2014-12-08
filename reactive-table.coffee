@@ -5,10 +5,6 @@ Template.ReactiveTable.helpers
     @_table = new ReactiveTable @options
     @_table.getData()
 
-Template.ReactiveTable.rendered = ->
-  console.log "table rendered"
-  return
-
 class ReactiveTable
   constructor: (@_options = {}) ->
     unless @_options.collection
