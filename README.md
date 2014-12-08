@@ -134,6 +134,10 @@ context = {
       {
         id: 'author',
         title: 'Author'
+      },
+      {
+        id: 'summary',
+        title: 'Brief summary'
       }
     ]
   },
