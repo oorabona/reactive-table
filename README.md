@@ -170,19 +170,37 @@ context = {
         _id: "iA3x9gRnfigyMyDua",
         rowIndex: 1,
         values: [
-          'Classic Title 1',
-          undefined,
-          'Summary 1'
+          {
+            name: 'col_title',
+            value: 'Classic Title 1'
+          },
+          {
+            name: 'author',
+            value: undefined
+          },
+          {
+            name: 'summary',
+            value: 'Summary 1'
+          }
         ]
       },
       {
         _id: "ZPp4wn2ZdPYhjXhf4",
         rowIndex: 2,
-        values: {
-          'Classic title 2',
-          'author',
-          undefined
-        }
+        values: [
+          {
+            name: 'col_title',
+            value: 'Classic Title 2'
+          },
+          {
+            name: 'author',
+            value: 'Author'
+          },
+          {
+            name: 'summary',
+            value: undefined
+          }
+        ]
       }
     ]
   }

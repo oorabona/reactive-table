@@ -157,7 +157,7 @@ ReactiveTable::getData = ->
     {
       _id: row._id
       rowIndex: index + 1    # startIndex + rowIndex <= endIndex
-      values: (row[field] ? `undefined` for field in fields)
+      values: (name: field, value: row[field] ? `undefined` for field in fields)
     }
 
   if data.rows.length > 0 or showBodyIfNoData
