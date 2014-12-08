@@ -3,7 +3,9 @@
 Template.ReactiveTable.helpers
   data: ->
     @_table = new ReactiveTable @options
-    @_table.getData()
+    log = @_table.getData()
+    console.log log
+    log
 
 Template.ReactiveTable.rendered = ->
   console.log "table rendered"
@@ -111,10 +113,6 @@ ReactiveTable::getData = ->
     result.header =
       columns: labels
 
-  opts =
-    sort: @_sort
-    fields: @_fields
-
   query = {}
   if @_query instanceof Array
     query["$or"] = @_query
@@ -125,13 +123,19 @@ ReactiveTable::getData = ->
   data = count: found.count()
 
   # Complete find options with skip and limit
-  opts.skip = @_options.limit * (@_options.page - 1)
-  opts.limit = @_options.limit
+  opts =
+    sort: @_sort
+    fields: @_fields
+    skip: @_options.limit * (@_options.page - 1)
+    limit: @_options.limit
+
   found = @_options.collection.find query, opts
 
   # For reading convenience :)
   data.startIndex = opts.skip + 1
-  data.endIndex = data.startIndex + opts.limit - 1
+  data.endIndex = if data.startIndex + opts.limit > data.count
+    data.count
+  else opts.skip + opts.limit
   data.page = @_options.page
 
   # Math magic under this line!
@@ -146,19 +150,17 @@ ReactiveTable::getData = ->
     maxPages = totalPages - pageBase
     if maxPages > opt_maxPages
       maxPages = opt_maxPages
-
     {
       page: idx+1+pageBase
       active: idx+1+pageBase is data.page
     } for idx in [0..maxPages-1]
   )(@_options.maxPages)
 
-  data.rows = found.map (el) ->
-    row = []
-    for field in fields
-      val = el[field] ? `undefined`
-      row.push value: val
-    row
+  data.rows = found.map (row, index) ->
+    {
+      rowIndex: index + 1    # startIndex + rowIndex <= endIndex
+      values: (row[field] ? `undefined` for field in fields)
+    }
 
   if data.rows.length > 0 or showBodyIfNoData
     result.data = data
