@@ -1,7 +1,7 @@
 Package.describe({
   name: 'oorabona:reactive-table',
   summary: 'Reactive tables with many options',
-  version: '0.0.1',
+  version: '1.0.0',
   git: 'https://github.com/oorabona/reactive-table.git'
 });
 
