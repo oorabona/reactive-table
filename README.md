@@ -34,7 +34,7 @@ All accepted options are:
 * collection (_Meteor.Collection_) : Must specify an instance of Meteor.Collection. __[mandatory]__
 * schema (_SimpleSchema_) : If you are using [SimpleSchema](https://github.com/aldeed/meteor-simple-schema), you can bind your instance __[optional]__
 * fields (_Array of Strings_) : Visible fields. Only __[mandatory]__ if not using 'schema' above.
-* fieldNames (_Array of Strings_) : Fields names to display as column titles. It will be used if set, otherwise if you provided a __schema__, it will get labels from SimpleSchema. And if not using SimpleSchema, it will default to __fields__.
+* fieldNames (_Object_) : Key is field, and value is the displayed title name. It will be used if set, otherwise if you provided a __schema__, it will get labels from SimpleSchema. And if not using SimpleSchema, it will default to __fields__.
 * sort (_Object_) : Key/value pairs of columns to be sorted __[optional]__
 * limit (_Integer_) : Limit output to this number of documents __[default: 5]__
 * page (_Integer_) : Go to this page (if using pagination). Must be > 0 __[default: 1]__
