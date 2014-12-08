@@ -3,9 +3,7 @@
 Template.ReactiveTable.helpers
   data: ->
     @_table = new ReactiveTable @options
-    log = @_table.getData()
-    console.log log
-    log
+    @_table.getData()
 
 Template.ReactiveTable.rendered = ->
   console.log "table rendered"
