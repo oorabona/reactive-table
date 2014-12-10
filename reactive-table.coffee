@@ -10,9 +10,6 @@ class ReactiveTable
     unless @_options.collection
       throw new Error "ReactiveTable needs a collection!"
 
-    unless @_options.collection instanceof Meteor.Collection
-      throw new Error "ReactiveTable collection needs to be Meteor.Collection"
-
     @_options.page ?= 1
     check @_options.page, Number
     unless @_options.page
