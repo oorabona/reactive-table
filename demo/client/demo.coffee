@@ -72,9 +72,7 @@ Template.reactiveFamous.helpers
     opts
 
 Template.reactiveFamous.rendered = ->
-  fscrollview = FView.from @
-  console.log "fscrollview", fscrollview
-  famous.core.Engine.pipe fscrollview.view
+  famous = FView.from @
   return
 
 Template.reactiveBootstrap.helpers
@@ -105,9 +103,15 @@ Template.tableLayout_famous_row.rendered = ->
   {name} = @data
   fields = Session.get 'fields'
   index = fields.indexOf name
-  console.log "#{name} in #{fields}", index
   fview.parent.modifier.setTransform Transform.translate(200*index, -50*index, 0),
     duration: 500, curve: 'easeOut'
+
+Template.registerHelper 'translated', (modifier_id) ->
+  mod = FView.byId modifier_id
+  console.log "footer", @, mod
+  mod.modifier.setTransform Transform.translate(0, 50+50*@data.rows.length),
+    duration: 500, curve: 'linear'
+  true
 
 Template.tableLayout_bootstrap_columns.helpers
   'columns': ->

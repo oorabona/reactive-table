@@ -16,7 +16,6 @@
 <template name="layout">
   {{#SequentialLayout size="[undefined,undefined]" direction="Y" itemSpacing="-50"}}
     {{> Surface template="header" size="[undefined,true]"}}
-    {{> Surface template="reactiveBootstrap" size="[undefined,true]"}}
     {{> reactiveFamous}}
   {{/SequentialLayout}}
 </template>
@@ -73,7 +72,7 @@
   {{#SequentialLayout direction="X" size="[undefined,50]"}}
     {{#famousEach values}}
       {{#StateModifier size="[200,50]"}}
-        {{>Surface origin="[0,0]" align="[0,0]" class="cell" size="[undefined,undefined]" template="tableLayout_famous_row" value=this}}
+        {{>Surface class="cell" size="[undefined,undefined]" template="tableLayout_famous_row" value=this}}
       {{/StateModifier}}
     {{/famousEach}}
   {{/SequentialLayout}}
@@ -95,6 +94,16 @@
       {{/ContainerSurface}}
     {{/famousEach}}
   {{/with}}
+  {{#Surface id="table_footer" size="[undefined,50]" modifier="StateModifier"}}
+    {{#if translated 'table_footer'}}
+    <div class="col-sm-6">
+      <span id="example_info" role="status" aria-live="polite">Showing {{data.startIndex}} to {{data.endIndex}} of {{data.count}} entries</span>
+    </div>
+    {{#if config.pagination}}
+      {{>tableLayout_bootstrap_pagination this}}
+    {{/if}}
+    {{/if}}
+  {{/Surface}}
 </template>
 
 <template name="reactiveBootstrap">
