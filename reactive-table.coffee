@@ -116,6 +116,14 @@ ReactiveTable::getData = ->
   found = @_options.collection.find query
   data = count: found.count()
 
+  # Math magic under this line!
+  data.totalPages = Math.ceil(data.count / @_options.limit)
+  if data.totalPages is 0 then data.totalPages = 1
+
+  # If page is 'ouf of bounds', i.e. above totalPages
+  if @_options.page > data.totalPages
+    @_options.page = 1
+
   # Complete find options with skip and limit
   opts =
     sort: @_sort
@@ -131,10 +139,6 @@ ReactiveTable::getData = ->
     data.count
   else opts.skip + opts.limit
   data.page = @_options.page
-
-  # Math magic under this line!
-  data.totalPages = Math.ceil(data.count / @_options.limit)
-  if data.totalPages is 0 then data.totalPages = 1
 
   data.pages = ((opt_maxPages) ->
     {totalPages} = data

@@ -1,4 +1,6 @@
 # Demo
+famous.polyfills;
+
 { Transform } = famous.core
 
 # Create a client only collection
@@ -69,6 +71,12 @@ Template.reactiveFamous.helpers
 
     opts
 
+Template.reactiveFamous.rendered = ->
+  fscrollview = FView.from @
+  console.log "fscrollview", fscrollview
+  famous.core.Engine.pipe fscrollview.view
+  return
+
 Template.reactiveBootstrap.helpers
   options: ->
     opts = _.clone defaultOptions
@@ -82,13 +90,24 @@ Template.reactiveBootstrap.helpers
 
     opts
 
-Template.tableLayout_famous_columns.rendered = ->
+Template.tableLayout_famous_column.rendered = ->
   fview = FView.from @
-  console.log "fview", fview
-  fview.children.forEach (column) ->
-    console.log "column", column
-    column.parent.modifier.setTransform Transform.translate(200, 0, 0),
-      duration: 500, curve: 'easeOut'
+  console.log "column fview", fview, @
+  {id} = @data
+  fields = Session.get 'fields'
+  index = fields.indexOf id
+  fview.parent.modifier.setTransform Transform.translate(200*index, -50*index, 0),
+    duration: 500, curve: 'easeOut'
+
+Template.tableLayout_famous_row.rendered = ->
+  fview = FView.from @
+  console.log "row fview", fview, @
+  {name} = @data
+  fields = Session.get 'fields'
+  index = fields.indexOf name
+  console.log "#{name} in #{fields}", index
+  fview.parent.modifier.setTransform Transform.translate(200*index, -50*index, 0),
+    duration: 500, curve: 'easeOut'
 
 Template.tableLayout_bootstrap_columns.helpers
   'columns': ->
