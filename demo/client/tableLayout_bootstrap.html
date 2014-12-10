@@ -1,0 +1,111 @@
+<template name="tableLayout_bootstrap">
+  <div class="form-inline no-footer">
+    <div class="container-fluid">
+      {{> tableLayout_bootstrap_limit}}
+      {{> tableLayout_bootstrap_search}}
+      {{> tableLayout_bootstrap_columns}}
+    </div>
+    <div class="container-fluid">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered no-footer" cellspacing="0" width="100%" role="grid" aria-describedby="example">
+          {{#with header}}
+          <thead>
+            <tr role="row">
+              {{#each columns}}
+              <th class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="{{title}}: activate to sort column descending" style="width: 48px;">
+                {{title}}
+                {{> tableLayout_bootstrap_useractions this}}
+              </th>
+              {{/each}}
+            </tr>
+          </thead>
+          {{/with}}
+          {{#with data}}
+          <tbody>
+            {{#each rows}}
+            <tr role="row" class="{{isOdd rowIndex}}">
+              {{#each values}}
+                {{#if isDate}}
+                <td class="sorting_{{../rowIndex}}">{{value.toLocaleString}}</td>
+                {{else}}
+                <td class="sorting_{{../rowIndex}}">{{value}}</td>
+                {{/if}}
+              {{/each}}
+            </tr>
+            {{/each}}
+          </tbody>
+          {{/with}}
+        </table>
+      </div>
+    </div>
+    <div class="container-fluid">
+      {{#with data}}
+      <div class="col-sm-6">
+        <span id="example_info" role="status" aria-live="polite">Showing {{startIndex}} to {{endIndex}} of {{count}} entries</span>
+      </div>
+      {{/with}}
+      {{#if config.pagination}}
+        {{>tableLayout_bootstrap_pagination this}}
+      {{/if}}
+    </div>
+  </div>
+</template>
+
+<template name="tableLayout_bootstrap_useractions">
+  <a class="fa fa-times pull-right" style="color:red;"></a>
+  <a class="fa fa-chevron-down pull-right" style="color:lightblue;"></a>
+  <a class="fa fa-chevron-up pull-right" style="color:lightblue;"></a>
+</template>
+
+<template name="tableLayout_bootstrap_search">
+  <div class="col-sm-4">
+    <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example"></label>
+  </div>
+</template>
+
+<template name="tableLayout_bootstrap_limit">
+  <div class="col-sm-4">
+    <label>Show
+      <select name="example_length" aria-controls="example" class="form-control input-sm">
+        {{#each maxByPageOptions}}
+        <option value="{{this}}" {{selected this}}>{{this}}</option>
+        {{/each}}
+      </select> entries
+    </label>
+  </div>
+</template>
+
+<template name="tableLayout_bootstrap_columns">
+  <div class="col-sm-4">
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="columns" data-toggle="dropdown" aria-expanded="true">
+        Columns
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="columns">
+        {{#each columns}}
+        <li role="presentation">
+          <input type="checkbox" {{checkedIf isVisible}} title="{{title}}" value="{{title}}">
+          {{title}}
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>
+
+<template name="tableLayout_bootstrap_pagination">
+  <div class="col-sm-6">
+    <ul class="pagination">
+      <li class="paginate_button previous {{disabledIfFirstPage}}" aria-controls="example" tabindex="0"><a href="#">Previous</a></li>
+      {{#each data.pages}}
+        {{> pagination_page this}}
+      {{/each}}
+      <li class="paginate_button next {{disabledIfLastPage}}" aria-controls="example" tabindex="0"><a href="#">Next</a></li>
+    </ul>
+  </div>
+</template>
+
+<template name="pagination_page">
+  <li class="paginate_button {{#if active}}active{{/if}}" aria-controls="example" tabindex="0"><a href="#">{{page}}</a></li>
+</template>

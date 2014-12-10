@@ -1,4 +1,5 @@
 # Demo
+{ Transform } = famous.core
 
 # Create a client only collection
 @Books = new Meteor.Collection null
@@ -12,7 +13,7 @@ Template.registerHelper 'isOdd', (val) -> if val % 2 then 'odd' else 'even'
 toType = (obj) ->
   ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
 
-Template.registerHelper 'isDate', -> 'date' == toType @
+Template.registerHelper 'isDate', -> 'date' == toType @value
 
 Session.setDefault 'maxByPage', 10
 Session.setDefault 'currentPage', 1
@@ -55,7 +56,7 @@ Session.setDefault 'sortBy', {}
   config:
     pagination: true
 
-Template.reactiveDemo.helpers
+Template.reactiveFamous.helpers
   options: ->
     opts = _.clone defaultOptions
     page = Session.get 'currentPage'
@@ -67,6 +68,27 @@ Template.reactiveDemo.helpers
     opts.sort = Session.get 'sortBy'
 
     opts
+
+Template.reactiveBootstrap.helpers
+  options: ->
+    opts = _.clone defaultOptions
+    page = Session.get 'currentPage'
+    if page < 1 then page = 1
+    opts.page = page
+    opts.limit = Session.get 'maxByPage'
+    opts.query = Session.get 'query'
+    opts.fields = Session.get 'fields'
+    opts.sort = Session.get 'sortBy'
+
+    opts
+
+Template.tableLayout_famous_columns.rendered = ->
+  fview = FView.from @
+  console.log "fview", fview
+  fview.children.forEach (column) ->
+    console.log "column", column
+    column.parent.modifier.setTransform Transform.translate(200, 0, 0),
+      duration: 500, curve: 'easeOut'
 
 Template.tableLayout_bootstrap_columns.helpers
   'columns': ->
