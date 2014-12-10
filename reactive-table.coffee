@@ -12,14 +12,18 @@ class ReactiveTable
 
     @_options.page ?= 1
     check @_options.page, Number
-    unless @_options.page
-      throw new Error "ReactiveTable cannot set page to 0"
+    unless @_options.page > 0
+      throw new Error "ReactiveTable page option must be > 0"
 
     # Make sure maxPages and limit are Numbers
-    @_options.maxPages ?= 1
+    @_options.maxPages ?= 5
     check @_options.maxPages, Number
+    unless @_options.maxPages >= 0
+      throw new Error "ReactiveTable maxPages option must be >= 0"
     @_options.limit ?= 5
     check @_options.limit, Number
+    unless @_options.limit > 0
+      throw new Error "ReactiveTable limit option must be > 0"
 
     # Set default find options fields and sorts
     @_fields = _id: 1
@@ -54,7 +58,7 @@ class ReactiveTable
         # If true, parse it and get a plain old Javascript Object
         if match
           # For each match try to make it look like a '{"key":"value"}' so that
-          # it should be parsed successfully by JSON.parse
+          # it can be parsed successfully by JSON.parse
           match.forEach (el) ->
             kv_pair = "{\"#{el}\"}".split(':').join '":"'
             # Remove double quotes if number is detected
@@ -124,7 +128,7 @@ ReactiveTable::getData = ->
   if @_options.page > data.totalPages
     @_options.page = 1
 
-  # Complete find options with skip and limit
+  # Query again with these options
   opts =
     sort: @_sort
     fields: @_fields
