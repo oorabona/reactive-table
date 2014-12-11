@@ -103,7 +103,7 @@ The most simple example:
       <tr>
         {{#each values}}
         <td>
-          {{value}}
+          {{name}} - {{value}}
         </td>
         {{/each}}
       </tr>
