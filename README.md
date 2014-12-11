@@ -36,7 +36,7 @@ All accepted options are:
 * fields (_Array of Strings_) : Visible fields. Only __[mandatory]__ if not using 'schema' above.
 * fieldNames (_Object_) : Key is field, and value is the displayed title name. It will be used if set, otherwise if you provided a __schema__, it will get labels from SimpleSchema. And if not using SimpleSchema, it will default to __fields__.
 * sort (_Object_) : Key/value pairs of columns to be sorted __[optional]__
-* limit (_Integer_) : Limit output to this number of documents. Must be > 0 __[default: 5]__
+* limit (_Integer_) : Limit output to this number of documents (by page). Must be > 0 __[default: 5]__
 * page (_Integer_) : Go to this page (if using pagination). Must be > 0 __[default: 1]__
 * maxPages (_Integer_) : When using pagination, set maximum displayable pages links. Must be >= 0 __[default: 5]__
 * query (_String_ or _Object_) : Facet querying (see below) __[optional]__
@@ -101,7 +101,7 @@ The most simple example:
     <tbody>
       {{#each rows}}
       <tr>
-        {{#each this}}
+        {{#each values}}
         <td>
           {{value}}
         </td>
