@@ -21,7 +21,7 @@ Template.tableLayout_bootstrap_useractions.events
 
 Template.tableLayout_bootstrap_pagination.helpers
   disabledIfFirstPage: ->
-    if @data.startIndex is 1 then 'disabled' else ''
+    if @data.page is 1 then 'disabled' else ''
   disabledIfLastPage: ->
     if @data.endIndex >= @data.count then 'disabled' else ''
 
