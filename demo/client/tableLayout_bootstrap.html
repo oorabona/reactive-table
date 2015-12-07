@@ -55,11 +55,11 @@
     <div class="container-fluid">
       <div class="col-xs-center">
         <ul class="pagination">
-          <li class="paginate_button previous {{disabledIfFirstPage}}" aria-controls="example" tabindex="0"><a href="#">Previous</a></li>
+          <li class="paginate_button previous {{disabledIfFirstPage}}" tabindex="0"><a href="#">Previous</a></li>
           {{#each data.pages}}
             {{> pagination_page this}}
           {{/each}}
-          <li class="paginate_button next {{disabledIfLastPage}}" aria-controls="example" tabindex="0"><a href="#">Next</a></li>
+          <li class="paginate_button next {{disabledIfLastPage}}" tabindex="0"><a href="#">Next</a></li>
         </ul>
       </div>
     </div>
@@ -67,5 +67,5 @@
 </template>
 
 <template name="pagination_page">
-  <li class="paginate_button {{#if active}}active{{/if}}" aria-controls="example" tabindex="0"><a href="#">{{page}}</a></li>
+  <li class="paginate_button {{#if active}}active{{/if}}" aria-controls="page" tabindex="0"><a href="#">{{page}}</a></li>
 </template>
