@@ -4,6 +4,8 @@ ReactiveTable, a Meteor package to provide you with reactively updated tabular d
 
 The demo shows a Bootstrap empty table. Open your browser console and when inserting data into the (client only) _Books_ collection, you should see the table auto updating !
 
+In the new [demo](http://reactivetable.meteor.com), I have added a ```dialog``` example to insert a ```Book``` using [AutoForm](https://github.com/aldeed/meteor-autoform).
+
 ## How it works
 This package has been designed to _prepare_ data and make template bindings
 easily. It handles pagination and search based queries.
@@ -31,17 +33,19 @@ Where:
 ReactiveTable options need to be completed with data source.
 All accepted options are:
 
-* collection (_Meteor.Collection_) : Must specify an instance of Meteor.Collection. __[mandatory]__
-* schema (_SimpleSchema_) : If you are using [SimpleSchema](https://github.com/aldeed/meteor-simple-schema), you can bind your instance __[optional]__
-* fields (_Array of Strings_) : Visible fields. Only __[mandatory]__ if not using 'schema' above.
-* fieldNames (_Object_) : Key is field, and value is the displayed title name. It will be used if set, otherwise if you provided a __schema__, it will get labels from SimpleSchema. And if not using SimpleSchema, it will default to __fields__.
-* sort (_Object_) : Key/value pairs of columns to be sorted __[optional]__
-* limit (_Integer_) : Limit output to this number of documents (by page). Must be > 0 __[default: 5]__
-* page (_Integer_) : Go to this page (if using pagination). Must be > 0 __[default: 1]__
-* maxPages (_Integer_) : When using pagination, set maximum displayable pages links. Must be >= 0 __[default: 5]__
-* query (_String_ or _Object_) : Facet querying (see below) __[optional]__
-* queryOpts (_String_) : When using query, will be used for RegExp options. E.g.: Use 'i' for insensitive match, 'g' for global, etc. __[default: 'i']__
-* config (_Object_) : If you want to reuse your templates you might be interested in providing a configuration object, it is of no use for ReactiveTable and forwarded untouched to the template.
+Property | Type | Mandatory | Description
+---------|------|-----------|-----
+collection | _Meteor.Collection_ | Yes | The data source to display/query from
+schema | _SimpleSchema_ | Only if not using ```fields``` | If you are using [SimpleSchema](https://github.com/aldeed/meteor-simple-schema)
+fields | _Array of Strings_ | Only if not using ```schema``` | Visible fields names
+fieldNames | _Object_ | No | Key is field, and value is the displayed title name. It will be used if set, otherwise if you provided a __schema__, it will get labels from ```SimpleSchema```. And if not using ```SimpleSchema```, it will default to __fields__.
+sort | _Object_ | No | Key/value pairs of columns to be sorted
+limit | _Integer_ | No (default: 5) | Limit output to this number of documents (by page). Must be > 0.
+page | _Integer_ | No (default: 1) | Go to this page (if using pagination). Must be > 0.
+maxPages | _Integer_ | No (default: 5) | When using pagination, set maximum displayable pages links. Must be >= 0
+query | _String_ or _Object_ | No | Facet querying (see below)
+queryOpts | _String_ | No (default: 'i') | When using query, will be used for RegExp options. E.g.: Use 'i' for insensitive match, 'g' for global, etc.
+config | _Object_ | No | If you want to reuse your templates you might be interested in providing a configuration object, it is of no use for ```ReactiveTable``` and forwarded untouched to the template.
 
 #### Example (Non-reactive):
 
