@@ -1,0 +1,145 @@
+<head>
+  <title>Meteor Reactive Table</title>
+  <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+</head>
+
+<body>
+  {{#famousContext id="mainCtx"}}
+    {{>layout}}
+  {{/famousContext}}
+</body>
+
+<template name="layout">
+  {{#Scrollview size="[undefined,undefined]" direction="Y" itemSpacing="-50"}}
+    {{> Surface template="header" size="[undefined,true]"}}
+    {{> reactiveFamous}}
+  {{/Scrollview}}
+</template>
+
+<template name="header">
+  <div class="container-fluid">
+    <h1>Welcome to Meteor Reactive Table demo!</h1>
+    <h2>This is a bootstrap 3 'theme' showing a complete use of
+      <a href="https://github.com/oorabona/reactive-table/">ReactiveTable</a></h2>
+    <h3>Open your browser console to insert data...</h3>
+  </div>
+  <hr/>
+</template>
+
+<template name="reactiveFamous">
+  {{> ReactiveTable layout='tableLayout_famous' options=options}}
+</template>
+
+<template name="tableLayout_famous_header">
+  <div class="form-inline">
+    {{> tableLayout_bootstrap_limit}}
+    {{> tableLayout_bootstrap_search}}
+    {{> tableLayout_bootstrap_columns}}
+  </div>
+</template>
+
+<template name="tableLayout_famous_useractions">
+</template>
+
+<template name="tableLayout_famous_row">
+  {{#if isDate}}
+  <em class="sorting_{{../rowIndex}}">{{value.toLocaleString}}</em>
+  {{else}}
+  <em class="sorting_{{../rowIndex}}">{{value}}</em>
+  {{/if}}
+</template>
+
+<template name="tableLayout_famous_column">
+  <b>{{title}}</b>
+  {{> tableLayout_famous_useractions this}}
+</template>
+
+<template name="tableLayout_famous_columns">
+  {{#SequentialLayout direction="X" size="[undefined,50]"}}
+    {{#famousEach columns}}
+      {{#StateModifier size="[200,50]"}}
+        {{>Surface class="cell" size="[undefined,undefined]" template='tableLayout_famous_column' value=this}}
+      {{/StateModifier}}
+    {{/famousEach}}
+  {{/SequentialLayout}}
+</template>
+
+<template name="tableLayout_famous_rows">
+  {{#SequentialLayout direction="X" size="[undefined,50]"}}
+    {{#if values}}
+    {{#famousEach values}}
+      {{#StateModifier size="[200,50]"}}
+        {{>Surface class="cell" size="[undefined,undefined]" template="tableLayout_famous_row" value=this}}
+      {{/StateModifier}}
+    {{/famousEach}}
+    {{/if}}
+  {{/SequentialLayout}}
+</template>
+
+<template name="tableLayout_famous">
+  {{#View size="[undefined,undefined]"}}
+  {{#with header}}
+    {{>Surface template="tableLayout_famous_header" size="[undefined, 50]"}}
+    {{#ContainerSurface size="[undefined,50]"}}
+      {{>tableLayout_famous_columns this}}
+    {{/ContainerSurface}}
+  {{/with}}
+  {{#with data}}
+    {{#if rows}}
+    {{#famousEach rows}}
+      {{#ContainerSurface size="[undefined,50]"}}
+        {{#StateModifier size="[undefined,50]"}}
+          {{>tableLayout_famous_rows this}}
+        {{/StateModifier}}
+      {{/ContainerSurface}}
+    {{/famousEach}}
+    {{/if}}
+  {{/with}}
+  {{#Surface id="table_footer" size="[undefined,50]" modifier="StateModifier"}}
+    {{#if translated 'table_footer'}}
+    <div class="col-sm-6">
+      <span id="example_info" role="status" aria-live="polite">Showing {{data.startIndex}} to {{data.endIndex}} of {{data.count}} entries</span>
+    </div>
+    {{#if config.pagination}}
+      {{>tableLayout_bootstrap_pagination this}}
+    {{/if}}
+    {{/if}}
+  {{/Surface}}
+  {{/View}}
+</template>
+
+<template name="reactiveBootstrap">
+  {{> ReactiveTable layout='tableLayout_bootstrap' options=options}}
+</template>
+
+<template name="tableLayout_unstyled">
+  <span>Got {{data.rows.length}} records</span>
+  <table>
+    {{#with header}}
+    <thead>
+      {{#each columns}}
+      <td>
+        {{title}}
+      </td>
+      {{/each}}
+    </thead>
+    {{/with}}
+    {{#with data}}
+    <tbody>
+      {{#each rows}}
+      <tr>
+        {{#each values}}
+        <td>
+          {{value}}
+        </td>
+        {{/each}}
+      </tr>
+      {{/each}}
+    </tbody>
+    {{/with}}
+  </table>
+</template>
