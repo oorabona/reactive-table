@@ -138,7 +138,7 @@ ReactiveTable::getData = ->
   found = @_options.collection.find query, opts
 
   # For reading convenience :)
-  data.startIndex = opts.skip + 1
+  data.startIndex = if data.count > 0 then opts.skip + 1 else 0
   data.endIndex = if data.startIndex + opts.limit > data.count
     data.count
   else opts.skip + opts.limit
