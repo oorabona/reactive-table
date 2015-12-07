@@ -1,113 +1,129 @@
 <head>
-  <title>Meteor Reactive Table</title>
-  <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
+  <title>Meteor ReactiveTable Demo</title>
+  <meta name="description" content="Meteor Remote Desktop">
+  <meta name="author" content="Olivier Orabona">
 </head>
 
 <body>
-  {{#famousContext id="mainCtx"}}
-    {{>layout}}
-  {{/famousContext}}
+  {{> layout}}
 </body>
 
+<template name="navbar">
+  <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Meteor ReactiveTable Demo</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <button class="nav-link btn btn-primary" title="Add a new book"><i class="fa fa-plus"></i></button>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav pull-right">
+        <li class="nav-item"><a class="nav-link" href="https://github.com/oorabona/reactive-table">GitHub</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://atmospherejs.com/oorabona">Atmosphere</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://twitter.com/oorabona">Twitter</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://fr.linkedin.com/in/olivierorabona">LinkedIn</a></li>
+      </ul>
+    </div><!-- /.container-fluid -->
+  </nav>
+</template>
+
 <template name="layout">
-  {{#SequentialLayout size="[undefined,undefined]" direction="Y" itemSpacing="-50"}}
-    {{> Surface template="header" size="[undefined,true]"}}
-    {{> reactiveFamous}}
-  {{/SequentialLayout}}
-</template>
-
-<template name="header">
+  {{> navbar}}
   <div class="container-fluid">
-    <h1>Welcome to Meteor Reactive Table demo!</h1>
-    <h2>This is a bootstrap 3 'theme' showing a complete use of
-      <a href="https://github.com/oorabona/reactive-table/">ReactiveTable</a></h2>
-    <h3>Open your browser console to insert data...</h3>
-  </div>
-  <hr/>
-</template>
-
-<template name="reactiveFamous">
-  {{> ReactiveTable layout='tableLayout_famous' options=options}}
-</template>
-
-<template name="tableLayout_famous_header">
-  <div class="form-inline">
-    {{> tableLayout_bootstrap_limit}}
-    {{> tableLayout_bootstrap_search}}
-    {{> tableLayout_bootstrap_columns}}
-  </div>
-</template>
-
-<template name="tableLayout_famous_useractions">
-</template>
-
-<template name="tableLayout_famous_row">
-  {{#if isDate}}
-  <em class="sorting_{{../rowIndex}}">{{value.toLocaleString}}</em>
-  {{else}}
-  <em class="sorting_{{../rowIndex}}">{{value}}</em>
-  {{/if}}
-</template>
-
-<template name="tableLayout_famous_column">
-  <b>{{title}}</b>
-  {{> tableLayout_famous_useractions this}}
-</template>
-
-<template name="tableLayout_famous_columns">
-  {{#SequentialLayout direction="X" size="[undefined,50]"}}
-    {{#famousEach columns}}
-      {{#StateModifier size="[200,50]"}}
-        {{>Surface class="cell" size="[undefined,undefined]" template='tableLayout_famous_column' value=this}}
-      {{/StateModifier}}
-    {{/famousEach}}
-  {{/SequentialLayout}}
-</template>
-
-<template name="tableLayout_famous_rows">
-  {{#SequentialLayout direction="X" size="[undefined,50]"}}
-    {{#famousEach values}}
-      {{#StateModifier size="[200,50]"}}
-        {{>Surface class="cell" size="[undefined,undefined]" template="tableLayout_famous_row" value=this}}
-      {{/StateModifier}}
-    {{/famousEach}}
-  {{/SequentialLayout}}
-</template>
-
-<template name="tableLayout_famous">
-  {{#with header}}
-    {{>Surface template="tableLayout_famous_header" size="[undefined, 50]"}}
-    {{#ContainerSurface size="[undefined,50]"}}
-      {{>tableLayout_famous_columns this}}
-    {{/ContainerSurface}}
-  {{/with}}
-  {{#with data}}
-    {{#famousEach rows}}
-      {{#ContainerSurface size="[undefined,50]"}}
-        {{#StateModifier size="[undefined,50]"}}
-          {{>tableLayout_famous_rows this}}
-        {{/StateModifier}}
-      {{/ContainerSurface}}
-    {{/famousEach}}
-  {{/with}}
-  {{#Surface id="table_footer" size="[undefined,50]" modifier="StateModifier"}}
-    {{#if translated 'table_footer'}}
-    <div class="col-sm-6">
-      <span id="example_info" role="status" aria-live="polite">Showing {{data.startIndex}} to {{data.endIndex}} of {{data.count}} entries</span>
+    <div class="row">
+      <div class="container-fluid">
+        <h1 class="text-center">Welcome to Meteor Reactive Table demo</h1>
+        <h4 class="text-center">You can add new books and see what happens !</h4>
+      </div>
     </div>
-    {{#if config.pagination}}
-      {{>tableLayout_bootstrap_pagination this}}
-    {{/if}}
-    {{/if}}
-  {{/Surface}}
+    <div class="row form-inline no-footer">
+      {{> setLayout}}
+      {{> setLimit}}
+      {{> setSearch}}
+      {{> setColumns}}
+    </div>
+  </div>
+  {{#with selectedDemo}}
+    {{> ReactiveTable this}}
+  {{/with}}
+  <footer>
+    <p class="text-center">
+      &copy; Made with <span class="fa fa-heart red"></span>
+        at Paris, France
+    </p>
+  </footer>
+  {{> add}}
 </template>
 
-<template name="reactiveBootstrap">
-  {{> ReactiveTable layout='tableLayout_bootstrap' options=options}}
+<template name="add">
+  <dialog id="add_dialog">
+    <form class="modal-dialog" method="dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Use this form to add an entry</h4>
+        </div>
+        <div class="modal-body">
+          {{> quickForm id="insert" schema="BookSchema" buttonContent=false}}
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-secondary" value="close">Close</button>
+          <button type="submit" class="btn btn-primary" value="save">Save changes</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+</template>
+
+<template name="setSearch">
+  <div class="col-md-3">
+    <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example"></label>
+  </div>
+</template>
+
+<template name="setLimit">
+  <div class="col-md-3">
+    <label>Show
+      <select name="limit" aria-controls="limit" class="form-control input-sm">
+        {{#each maxByPageOptions}}
+        <option value="{{this}}" {{selected this}}>{{this}}</option>
+        {{/each}}
+      </select> entries
+    </label>
+  </div>
+</template>
+
+<template name="setLayout">
+  <div class="col-md-3">
+    <label>Layout
+      <select name="layout" aria-controls="layout" class="form-control input-sm">
+        {{#each availLayouts}}
+        <option value="{{this}}" {{selected this}}>{{this}}</option>
+        {{/each}}
+      </select>
+    </label>
+  </div>
+</template>
+
+<template name="setColumns">
+  <div class="col-md-3">
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="columns" data-toggle="dropdown" aria-expanded="true">
+        Columns
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="columns">
+        {{#each columns}}
+        <li role="presentation">
+          <input type="checkbox" {{checkedIf isVisible}} title="{{title}}" value="{{title}}">
+          {{title}}
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
 </template>
 
 <template name="tableLayout_unstyled">
@@ -117,7 +133,7 @@
     <thead>
       {{#each columns}}
       <td>
-        {{title}}
+      {{title}}
       </td>
       {{/each}}
     </thead>
@@ -128,7 +144,7 @@
       <tr>
         {{#each values}}
         <td>
-          {{value}}
+          {{name}} - {{value}}
         </td>
         {{/each}}
       </tr>

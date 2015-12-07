@@ -1,10 +1,4 @@
 <template name="tableLayout_bootstrap">
-  <div class="form-inline no-footer">
-    <div class="container-fluid">
-      {{> tableLayout_bootstrap_limit}}
-      {{> tableLayout_bootstrap_search}}
-      {{> tableLayout_bootstrap_columns}}
-    </div>
     <div class="container-fluid">
       <div class="table-responsive">
         <table class="table table-striped table-bordered no-footer" cellspacing="0" width="100%" role="grid" aria-describedby="example">
@@ -40,7 +34,7 @@
     </div>
     <div class="container-fluid">
       {{#with data}}
-      <div class="col-sm-6">
+      <div class="col-xs-center">
         <span id="example_info" role="status" aria-live="polite">Showing {{startIndex}} to {{endIndex}} of {{count}} entries</span>
       </div>
       {{/with}}
@@ -48,61 +42,27 @@
         {{>tableLayout_bootstrap_pagination this}}
       {{/if}}
     </div>
-  </div>
 </template>
 
 <template name="tableLayout_bootstrap_useractions">
-  <a class="fa fa-times pull-right" style="color:red;"></a>
-  <a class="fa fa-chevron-down pull-right" style="color:lightblue;"></a>
-  <a class="fa fa-chevron-up pull-right" style="color:lightblue;"></a>
-</template>
-
-<template name="tableLayout_bootstrap_search">
-  <div class="col-sm-4">
-    <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example"></label>
-  </div>
-</template>
-
-<template name="tableLayout_bootstrap_limit">
-  <div class="col-sm-4">
-    <label>Show
-      <select name="example_length" aria-controls="example" class="form-control input-sm">
-        {{#each maxByPageOptions}}
-        <option value="{{this}}" {{selected this}}>{{this}}</option>
-        {{/each}}
-      </select> entries
-    </label>
-  </div>
-</template>
-
-<template name="tableLayout_bootstrap_columns">
-  <div class="col-sm-4">
-    <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="columns" data-toggle="dropdown" aria-expanded="true">
-        Columns
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="columns">
-        {{#each columns}}
-        <li role="presentation">
-          <input type="checkbox" {{checkedIf isVisible}} title="{{title}}" value="{{title}}">
-          {{title}}
-        </li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
+  <a class="fa fa-times pull-right red" title="Remove column"></a>
+  <a class="fa fa-chevron-down pull-right lb" title="Sort descending"></a>
+  <a class="fa fa-chevron-up pull-right lb" title="Sort ascending"></a>
 </template>
 
 <template name="tableLayout_bootstrap_pagination">
-  <div class="col-sm-6">
-    <ul class="pagination">
-      <li class="paginate_button previous {{disabledIfFirstPage}}" aria-controls="example" tabindex="0"><a href="#">Previous</a></li>
-      {{#each data.pages}}
-        {{> pagination_page this}}
-      {{/each}}
-      <li class="paginate_button next {{disabledIfLastPage}}" aria-controls="example" tabindex="0"><a href="#">Next</a></li>
-    </ul>
+  <div class="row">
+    <div class="container-fluid">
+      <div class="col-xs-center">
+        <ul class="pagination">
+          <li class="paginate_button previous {{disabledIfFirstPage}}" aria-controls="example" tabindex="0"><a href="#">Previous</a></li>
+          {{#each data.pages}}
+            {{> pagination_page this}}
+          {{/each}}
+          <li class="paginate_button next {{disabledIfLastPage}}" aria-controls="example" tabindex="0"><a href="#">Next</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
