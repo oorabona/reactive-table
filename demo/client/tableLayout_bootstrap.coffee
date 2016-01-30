@@ -1,3 +1,15 @@
+Template.registerHelper '$eq', (what, to) ->
+  what is to
+  
+Template.tableLayout_bootstrap_useractions.helpers
+  sortState: ->
+    sortBy = Session.get 'sortBy'
+    sort = sortBy[@id]
+    switch sort
+      when 1 then 'asc'
+      when -1 then 'desc'
+      else 0
+
 Template.tableLayout_bootstrap_useractions.events
   'click .fa-times': (evt, tmpl) ->
     fields = Session.get 'fields'
@@ -10,6 +22,12 @@ Template.tableLayout_bootstrap_useractions.events
   'click .fa-chevron-down': (evt, tmpl) ->
     sortBy = Session.get 'sortBy'
     sortBy[@id] = -1
+    Session.set 'sortBy', sortBy
+    return
+
+  'click .fa-ban': (evt, tmpl) ->
+    sortBy = Session.get 'sortBy'
+    delete sortBy[@id]
     Session.set 'sortBy', sortBy
     return
 

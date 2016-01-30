@@ -46,8 +46,13 @@
 
 <template name="tableLayout_bootstrap_useractions">
   <a class="fa fa-times pull-right red" title="Remove column"></a>
-  <a class="fa fa-chevron-down pull-right lb" title="Sort descending"></a>
+  {{#if $eq sortState 'asc'}}
+  <a class="fa fa-ban pull-right lb" title="Remove sort"></a>
+  {{else}} {{#if $eq sortState 'desc'}}
   <a class="fa fa-chevron-up pull-right lb" title="Sort ascending"></a>
+  {{else}}
+  <a class="fa fa-chevron-down pull-right lb" title="Sort descending"></a>
+  {{/if}} {{/if}} 
 </template>
 
 <template name="tableLayout_bootstrap_pagination">
