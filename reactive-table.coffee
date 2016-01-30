@@ -128,9 +128,15 @@ ReactiveTable::getData = ->
   if @_options.page > data.totalPages
     @_options.page = 1
 
+  # It seems that leaving sort columns with undefined values makes find go wild.
+  # So keep only valid sort columns in the sort option.
+  sort = {}
+  for key, value of @_sort
+    sort[key] = value if !!value
+
   # Query again with these options
   opts =
-    sort: @_sort
+    sort: sort
     fields: @_fields
     skip: @_options.limit * (@_options.page - 1)
     limit: @_options.limit
